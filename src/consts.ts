@@ -4,27 +4,27 @@
  * A few of these are not used yet, and are subject to change, example of this is Author.
  */
 export const SITE_METADATA = {
-    title: 'Astro Starter Blog',
-    headerTitle: 'Astro Starter Blog',
+    title: 'tomz12321s Personal Blog',
+    headerTitle: 'tomz12321s Personal Blog',
     description: 'A blog created with Astro and Tailwind.css',
     language: 'en-us',
     theme: 'system', // Options: system, light, dark, Does not work yet
-    siteUrl: 'https://astro-starter-blog.yon.fun/',
-    siteRepo: 'https://github.com/wanoo21/tailwind-astro-starting-blog',
+    siteUrl: 'https://grand-sorbet-7803bb.netlify.app',
+    siteRepo: 'https://github.com/tomz12321/tomz12321-tailwind-astro-blog',
     siteLogo: '/static/images/logo.png',
     socialBanner: '/static/images/twitter-card.png',
     locale: 'en-US',
 
     // The following are subject to change. They are placeholders for now.
     // This project provide a default author content see src/content/authors/default.mdx, so these details are better to be inserted there.
-    author: 'John Doe',
-    mastodon: 'https://mastodon.social/@mastodonuser',
-    email: 'address@yoursite.com',
-    github: 'https://github.com',
-    twitter: 'https://twitter.com/Twitter',
-    facebook: 'https://facebook.com',
-    youtube: 'https://youtube.com',
-    linkedin: 'https://www.linkedin.com',
+    author: 'Jyhwoei Yang',
+    // mastodon: 'https://mastodon.social/@mastodonuser',
+    email: 'tomz12321@gmail.com',
+    github: 'https://github.com/tomz12321',
+    twitter: 'https://twitter.com/tomz12321',
+    facebook: 'https://facebook.com/yang.jyhwoei',
+    // youtube: 'https://youtube.com',
+    linkedin: 'https://www.linkedin.com/in/web-developer-jyhwoei-tom-yang',
 
     // These are not supported yet
     // analytics: {

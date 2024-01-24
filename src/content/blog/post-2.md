@@ -1,0 +1,9 @@
+---
+title: My Second Blog Post
+author: Astro Learner
+date: 2024-01-21
+tags: ['astro', 'blogging', 'learning-in-public', 'successes']
+draft: false
+---
+
+After a successful first week learning Astro, I decided to try some more. I wrote and imported a small component from memory!
