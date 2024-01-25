@@ -9,7 +9,7 @@ export const SITE_METADATA = {
     description: 'A blog created with Astro and Tailwind.css',
     language: 'en-us',
     theme: 'system', // Options: system, light, dark, Does not work yet
-    siteUrl: 'https://grand-sorbet-7803bb.netlify.app',
+    siteUrl: ' https://tomz12321-tailwind-astro-blog.dev',
     siteRepo: 'https://github.com/tomz12321/tomz12321-tailwind-astro-blog',
     siteLogo: '/static/images/logo.png',
     socialBanner: '/static/images/twitter-card.png',
