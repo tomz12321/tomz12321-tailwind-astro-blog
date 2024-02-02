@@ -24,6 +24,14 @@ const {title, description} = Astro.props;
         <Header/>
         <main class="mb-auto">
             <slot/>
+            <amp-ad width="100vw" height="320"
+                type="adsense"
+                data-ad-client="ca-pub-8231907589449807"
+                data-ad-slot="4313846578"
+                data-auto-format="rspv"
+                data-full-width="">
+            <div></div>
+            </amp-ad>
         </main>
         <Footer/>
     </div>

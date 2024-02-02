@@ -20,7 +20,14 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
   <script
     async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8231907589449807"
-    crossorigin="anonymous">
+    crossorigin="anonymous"
+  >
+  </script>
+  <script
+    async
+    custom-element="amp-ad"
+    src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"
+  >
   </script>
   <!-- Global Metadata -->
   <meta charset="utf-8" lang={SITE_METADATA.language} />
@@ -99,6 +106,6 @@ const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
   <link rel="alternate" type="application/rss+xml" href="/rss.xml" />
 
   <!-- Google Ad Metadata -->
-  <meta name="google-adsense-account" content="ca-pub-8231907589449807">
+  <meta name="google-adsense-account" content="ca-pub-8231907589449807" />
   <ViewTransitions />
 </head>
