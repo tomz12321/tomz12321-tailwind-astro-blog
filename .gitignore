@@ -7,10 +7,10 @@ dist/
 node_modules/
 
 # github files
-.github
+.github/
 
 # IDE
-.vscode
+.vscode/
 
 # logs
 npm-debug.log*
