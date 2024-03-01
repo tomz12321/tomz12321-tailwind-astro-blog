@@ -6,6 +6,12 @@ dist/
 # dependencies
 node_modules/
 
+# github files
+.github/
+
+# IDE
+.vscode/
+
 # logs
 npm-debug.log*
 yarn-debug.log*
