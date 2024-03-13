@@ -35,17 +35,17 @@ Here we go :
 - 網頁前端三劍客 HTML / CSS / JavaScript
 - 一個 IDE，我自己是用 VS Code
 - 一個 Browser (e.g. Chrome)
-- terminal 終端機 (macOS bashshell)
+- Terminal 終端機 (macOS bashshell)
 
 
 首先我們先照著下面的專案架構
 
-建立一組 
-
-index.html
-index.js
-style.css
-
+建立一組 網頁前端三劍客。
+```
+- index.html
+- index.js
+- style.css
+```
 
 使用 mac 內建的 bashshell 快速做法
 ```
@@ -57,7 +57,7 @@ touch index.html
 touch index.js
 touch style.css
 ```
-然後存成 `create-simple-app.sh` 之後執行
+拷貝，然後存成 `create-simple-app.sh` 之後執行
 ```
 $ chmod 777 ./create-simple-app.sh
 ```
@@ -270,7 +270,7 @@ exportBtn.addEventListener('click', exportColors);
 showColors();
 ```
 
-- `style.css`
+- style.css
 ```
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
@@ -425,7 +425,7 @@ span.close-popup{
 }
 ```
 
-然後你需要一個 `manifest.json`
+然後你會需要一個 `manifest.json`
 ```
 {
   "manifest_version": 3,
@@ -446,8 +446,7 @@ span.close-popup{
 
 我們需要新增一個，`/icons` 資料夾，放 icons 
 
-- 來這邊下載我們會用到的 icons
-[/icons](https://github.com/tomz12321/simple-color-picker/tree/main/icons)
+- 來這邊下載我們會用到的 icons - ([載點](https://github.com/tomz12321/simple-color-picker/tree/main/icons))
 
 - 接下來的步驟比較複雜，會用到 Chrome 的 Developer Mode 
 
@@ -463,19 +462,32 @@ chrome://extensions/
 ![image](/static/images/Day11/screenshot-11-1-click-on-load-unpack.png)
 - 選擇你的專案資料夾擺放位置
 ![image](/static/images/Day11/screenshot-11-2-select-folder.png)
-- 開啟 extensions 並釘選你剛剛新加入的 extension - color picker
+- 開啟 Extensions 並釘選你剛剛新加入的 Extension - Color Picker
 ![image](/static/images/Day11/screenshot-11-3-pin-your-new-extension.png)
 
-然後你就得到一個 Color Picker 的 Extension 了
-![image](/static/images/Day11/screenshot-11-4-result.png)
+- 如果以上都完成了：
 
-以上 10 mins 內快速完成一個 Color Picker
+最終成果，我們會得到一個 Color Picker 的 Extension。
+![image](/static/images/Day11/screenshot-11-4-result.png)
+有了這個小工具，我們就可以在任意網頁上找任意格點的顏色代碼了。
+
+
+---
+#### 複習一下我們以上學習了什麼：
+1. Terminal 用法
+2. bashshell 寫 script
+3. 了解網頁三劍客之間的關係
+4. 了解怎麼在 local 端，開發一個 Chrome Extension
+
+以上 5 mins 內快速完成一個 Color Picker。
 
 如果大家對這個主題有興趣的話，
 
-找時間，我們會再來 Speed Run 一輪，手刻一個 計算機。
+找時間，我們可以再來 Speed Run 一輪，下次手刻一台`計算機`(XD)。
 
-完整 Github Repo ([傳送門](https://github.com/tomz12321/simple-color-picker))
+---
+
+完整 Github Repo - ([傳送門](https://github.com/tomz12321/simple-color-picker))
 
 ---
 
@@ -490,5 +502,7 @@ chrome://extensions/
 ```
 
 🔻支持打賞🔻
-Welcome to my github [https://github.com/tomz12321]
+
+Welcome to my github - [https://github.com/tomz12321]
+
 喜歡的話，隨便找個專案給顆星。
