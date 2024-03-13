@@ -1,0 +1,508 @@
+---
+title: 踏入自媒體的 30 天 - Day 11
+author: Tomzyang
+date: 2024-03-11
+tags: ["astro", "successes", "30days"]
+draft: false
+summary: '今天要來演示 5 mins 快速地做一個 Chrome Extension 的微專案。'
+
+---
+# Day #11
+
+### 前言
+30 days 的開始
+踏入自媒體的 30 天❗️- 我有個朋友在做自媒體
+
+### Image
+Here we go :
+
+
+![image](/static/images/hereWeGo.jpg)
+
+### 默默小語
+
+最近開始用 JS 刷題，
+但是同時建立基礎知識也是很重要的。
+
+---
+
+### 正文開始
+
+今天要來演示 5 mins 快速地做一個 Chrome Extension 的微專案。
+
+以下會用到的工具只會有
+
+- 網頁前端三劍客 HTML / CSS / JavaScript
+- 一個 IDE，我自己是用 VS Code
+- 一個 Browser (e.g. Chrome)
+- Terminal 終端機 (macOS bashshell)
+
+
+首先我們先照著下面的專案架構
+
+建立一組 網頁前端三劍客。
+```
+- index.html
+- index.js
+- style.css
+```
+
+使用 mac 內建的 bashshell 快速做法
+```
+#!/bin/bash
+
+mkdir simple-color-picker
+cd simple-color-picker/
+touch index.html
+touch index.js
+touch style.css
+```
+拷貝，然後存成 `create-simple-app.sh` 之後執行
+```
+$ chmod 777 ./create-simple-app.sh
+```
+再執行
+```
+$ ./create-simple-app.sh
+```
+
+做完以後，你就會得到一個以下的專案結構
+
+```
+Project Structure
+
+/simple-color-picker
+├── index.html
+├── index.js
+└── style.css
+```
+
+
+剩下的就是打開 IDE 照著打
+
+- index.html
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Chrome Color Picker Extension | Tomzyang</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="picker">
+        <button id="picker-btn">Pick Color</button>
+        <button id="export-btn">Export Colors</button>
+      </div>
+      <div class="colors-list hide">
+        <header>
+          <p class="title">Picked Colors</p>
+          <span id="clear-btn">Clear All</span>
+        </header>
+        <ul class="all-colors"></ul>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
+```
+或著就直接複製 code 貼上。
+
+- index.js
+```
+const pickerBtn = document.querySelector("#picker-btn");
+const clearBtn = document.querySelector("#clear-btn");
+const colorList = document.querySelector(".all-colors");
+const exportBtn = document.querySelector("#export-btn");
+
+// Retrieving picked colors from localstorage or initializing an empty array
+let pickedColors = JSON.parse(localStorage.getItem("colors-list")) || [];
+
+// Variable to keep track of the current color popup
+let currentPopup = null;
+
+// Function to copy text to the clipboard
+const copyToClipboard = async (text, element) => {
+    try {
+        await navigator.clipboard.writeText(text);
+        element.innerText = "Copied!";
+        // Resseting element text after 1 second
+        setTimeout(() => {
+            element.innerText = text;
+        }, 1000);
+    } catch (error) {
+        alert("Filed to copy text!");
+    }
+};
+
+// Function to export colors as text file
+const exportColors = () => {
+    const colorText = pickedColors.join("\n");
+    const blob = new Blob([colorText], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Colors.txt";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+};
+
+// Function to create the color popup
+const createColorPopup = (color) => {
+    const popup = document.createElement("div");
+    popup.classList.add("color-popup");
+    popup.innerHTML = `
+        <div class="color-popup-content">
+            <span class="close-popup">x</span>
+            <div class="color-info">
+                <div class="color-preview" style="background: ${color};"></div>
+                <div class="color-details">
+                    <div class="color-value">
+                        <span class="label">Hex:</span>
+                        <span class="value hex" data-color="${color}">${color}</span>
+                    </div>
+                    <div class="color-value">
+                        <span class="label">RGB:</span>
+                        <span class="value rgb" data-color="${color}">${hexToRgb(color)}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Close button inside the popup
+    const closePopup = popup.querySelector(".close-popup");
+    closePopup.addEventListener('click', () => {
+        document.body.removeChild(popup);
+        currentPopup = null;
+    });
+
+    // Event listeners to copy color values to clipboard
+    const colorValues = popup.querySelectorAll(".value");
+    colorValues.forEach((value) => {
+        value.addEventListener('click', (e) => {
+            const text = e.currentTarget.innerText;
+            copyToClipboard(text, e.currentTarget);
+        });
+    });
+
+    return popup;
+};
+
+// Function to display the picked colors
+const showColors = () => {
+    colorList.innerHTML = pickedColors.map((color) =>
+        `
+            <li class="color">
+                <span class="rect" style="background: ${color}; border: 1px solid ${color === "#ffffff" ? "#ccc" : color}"></span>
+                <span class="value hex" data-color="${color}">${color}</span>
+            </li>
+        `
+    ).join("");
+
+    const colorElements = document.querySelectorAll(".color");
+    colorElements.forEach((li) => {
+        const colorHex = li.querySelector(".value.hex");
+        colorHex.addEventListener('click', (e) => {
+            const color = e.currentTarget.dataset.color;
+            if (currentPopup) {
+                document.body.removeChild(currentPopup);
+            }
+            const popup = createColorPopup(color);
+            document.body.appendChild(popup);
+            currentPopup = popup;
+        });
+    });
+
+    const pickedColorsContainer = document.querySelector(".colors-list");
+    pickedColorsContainer.classList.toggle("hide", pickedColors.length === 0);
+};
+
+// Function to convert a hex color code to rgb format
+const hexToRgb = (hex) => {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgb(${r}, ${g}, ${b})`;
+};
+
+// Function to activate the eye dropper color picker
+const activateEyeDropper = async () => {
+    document.body.style.display = "none";
+    try {
+        // Opening the eye dropper and retrieving the selected color
+        const { sRGBHex } = await new EyeDropper().open();
+
+        if (!pickedColors.includes(sRGBHex)) {
+            pickedColors.push(sRGBHex);
+            localStorage.setItem("colors-list", JSON.stringify(pickedColors));
+        }
+
+        showColors();
+    } catch (error) {
+        alert("Filed to copy the color code!");
+    } finally {
+        document.body.style.display = "block";
+    }
+};
+
+// Function to clear all picked colors
+const clearAllColors = () => {
+    pickedColors = [];
+    localStorage.removeItem("colors-list");
+    showColors();
+};
+
+// Event listeners for buttons
+clearBtn.addEventListener('click', clearAllColors);
+pickerBtn.addEventListener('click', activateEyeDropper);
+exportBtn.addEventListener('click', exportColors);
+
+// Displaying picked colors on document load
+showColors();
+```
+
+- style.css
+```
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container{
+    background-color: #fff;
+    width: 350px;
+}
+
+.container :where(.picker, header, .all-colors){
+    display: flex;
+    align-items: center;
+    border-radius: 0 0 35px 35px;
+}
+
+.container .picker{
+    padding: 35px 0;
+    background-color: #c8e6c9;
+    justify-content: center;
+}
+
+.picker #picker-btn{
+    margin-right: 8px;
+}
+
+.picker #picker-btn, .picker #export-btn{
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 6px 12px;
+    background-color: #43a047;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.picker #picker-btn:hover, .picker #export-btn:hover{
+    background-color: #2e7d32;
+}
+
+.colors-list{
+    margin: 10px 15px;
+}
+
+.colors-list header{
+    justify-content: space-between;
+}
+
+header .title{
+    font-size: 1rem;
+}
+
+header #clear-btn{
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #43a047;
+}
+
+header #clear-btn:hover{
+    color: #2e7d32;
+}
+
+.colors-list.hide{
+    display: none;
+}
+
+.colors-list .all-colors{
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 10px 0 0;
+}
+
+.all-colors .color{
+    display: flex;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: calc(100% / 3);
+}
+
+.all-colors .rect{
+    height: 22px;
+    width: 22px;
+    display: block;
+    margin-right: 3px;
+    border-radius: 3px;
+}
+
+.all-colors .color span{
+    font-size: 0.86rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.color-popup{
+    position: fixed;
+    top: 52px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+}
+
+.color-popup-content{
+    padding: 20px;
+}
+
+.color-info{
+    display: flex;
+    align-items: center;
+}
+
+.color-preview{
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.color-details{
+    flex-grow: 1;
+}
+
+.color-value{
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.label{
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.value{
+    cursor: pointer;
+}
+
+span.close-popup{
+    font-size: 14px;
+    cursor: pointer;
+    float: right;
+}
+```
+
+然後你會需要一個 `manifest.json`
+```
+{
+  "manifest_version": 3,
+  "name": "Color Picker",
+  "description": "Simple Color Picker Extension that we created. Pick any color on web page, Picked Colors history, Copy RGB and Hex or Clear them with a single click.",
+  "version": "1.0",
+  "action": {
+      "default_popup": "index.html"
+  },
+  "icons": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+  }
+}
+```
+
+我們需要新增一個，`/icons` 資料夾，放 icons 
+
+- 來這邊下載我們會用到的 icons - ([載點](https://github.com/tomz12321/simple-color-picker/tree/main/icons))
+
+- 接下來的步驟比較複雜，會用到 Chrome 的 Developer Mode 
+
+Chrome 開啟一個分頁。在網址列輸入：
+```
+chrome://extensions/
+```
+
+跟上了
+
+- 右上角開啟 Developer Mode 
+- 開啟以後，在左上角找到 `Load unpacked` 按鈕
+![image](/static/images/Day11/screenshot-11-1-click-on-load-unpack.png)
+- 選擇你的專案資料夾擺放位置
+![image](/static/images/Day11/screenshot-11-2-select-folder.png)
+- 開啟 Extensions 並釘選你剛剛新加入的 Extension - Color Picker
+![image](/static/images/Day11/screenshot-11-3-pin-your-new-extension.png)
+
+- 如果以上都完成了：
+
+最終成果，我們會得到一個 Color Picker 的 Extension。
+![image](/static/images/Day11/screenshot-11-4-result.png)
+有了這個小工具，我們就可以在任意網頁上找任意格點的顏色代碼了。
+
+
+---
+#### 複習一下我們以上學習了什麼：
+1. Terminal 用法
+2. bashshell 寫 script
+3. 了解網頁三劍客之間的關係
+4. 了解怎麼在 local 端，開發一個 Chrome Extension
+
+以上 5 mins 內快速完成一個 Color Picker。
+
+如果大家對這個主題有興趣的話，
+
+找時間，我們可以再來 Speed Run 一輪，下次手刻一台`計算機`(XD)。
+
+---
+
+完整 Github Repo - ([傳送門](https://github.com/tomz12321/simple-color-picker))
+
+---
+
+#### 參考資料
+- [Bash Shell 是什麼?](https://medium.com/hannah-lin/%E7%A8%8B%E5%BC%8F%E7%AD%86%E8%A8%98-bash-script-8926bbc0ac44)
+- [Javascript30](https://javascript30.com/)
+- [100 Days of JavaScript Coding](https://www.youtube.com/playlist?list=PLkC56g8fboI0HghByzVuD2Vz8ROUXfF_j)
+
+```
+對啊我是一個宅宅工程師，
+找人一起 code 是我的日常。
+```
+
+🔻支持打賞🔻
+
+Welcome to my github - [https://github.com/tomz12321]
+
+喜歡的話，隨便找個專案給顆星。
