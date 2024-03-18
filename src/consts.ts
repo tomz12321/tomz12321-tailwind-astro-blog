@@ -25,7 +25,8 @@ export const SITE_METADATA = {
     facebook: 'https://facebook.com/yang.jyhwoei',
     // youtube: 'https://youtube.com',
     linkedin: 'https://www.linkedin.com/in/web-developer-jyhwoei-tom-yang',
-
+    googleAnalyticsId: 'G-T556NRV6BB'
+    
     // These are not supported yet
     // analytics: {
     //     // If you want to use an analytics provider you have to add it to the
