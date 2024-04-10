@@ -1,0 +1,264 @@
+---
+title: 踏入自媒體的 30 天 - Day 31
+author: Tomzyang
+date: 2024-03-31
+tags: ["astro", "successes", "30days", "front-end"]
+draft: false
+summary: 'React 技術筆記'
+
+---
+
+# React 技術筆記
+
+### 1.【 Web App - 效能優化 】
+過去做過哪些前端效能優化的任務？
+
+是怎麼解決這些問題的？
+
+1. 圖像壓縮和優化：透過壓縮圖像文件大小，減少網頁加載時間，提高網頁性能。
+2. 檔案合併和最小化：將多個 CSS 和 JavaScript 檔案合併為較少的檔案，並對其進行最小化處理，減少 HTTP 請求和檔案大小，從而加快網頁載入速度。
+3. 使用CDN（Content Delivery Network）：將靜態資源部署到全球各地的 CDN 服務器上，讓用戶可以從最接近他們的伺服器加載資源，提高載入速度。
+4. 優化字型載入：僅加載必要的字型和字型變體，避免不必要的資源浪費，加快網頁載入速度。
+5. 延遲加載非必要的資源：對於非必要的資源（如廣告、分析腳本等），使用延遲載入或異步載入的方式，以減少對網頁載入速度的影響。
+6. 優化 CSS 和 JavaScript：減少 CSS 和 JavaScript 的大小，避免不必要的冗餘代碼，並使用壓縮和縮小技術，提高網頁性能。
+7. 預取資源：使用預取機制，預先加載可能需要的資源，以減少等待時間，提高用戶體驗。
+8. 服務器端快取：配置伺服器端快取策略，以減少對後端服務器的請求，並提高網頁載入速度。
+
+這些問題通常透過應用上述提到的解決方案來解決，以提高網頁載入速度和性能，從而提升用戶體驗。
+
+###  2.【 Web App - SEO 】
+當網站導入 SPA 架構引起 SEO 搜尋不到時，會有 預渲染、靜態化、SSR....等多種不同的解決辦法，過去經驗哪一種最好？
+
+如果可能可以分享差別為何？
+過去，當網站導入單頁應用程序（SPA）架構後，常見的解決方案包括預渲染（Pre-rendering）、靜態化（Static Site Generation，SSG）、以及伺服器端渲染（Server-Side Rendering，SSR）。每種方法都有其優點和適用情況，因此最好的解決方案取決於特定情況。
+
+1. 預渲染（Pre-rendering）：
+
+    - 在構建階段（build time）生成網頁的 HTML，以靜態文件的形式提供給瀏覽器。
+    - 優點：能夠在客戶端加載之前提供完整的 HTML，有利於 SEO，因為搜索引擎能夠更容易地索引這些頁面。
+    - 缺點：對於動態內容的網站來說，預渲染可能會有一些挑戰，因為不是所有內容都能在構建時決定。
+
+2. 靜態化（Static Site Generation，SSG）：
+
+    - 在構建階段生成整個網站的靜態 HTML 文件，這些文件在伺服器上存儲，並在需要時被提供給用戶。
+    - 優點：能夠在構建階段生成靜態 HTML 文件，同樣有利於 SEO，且可以充分利用 CDN 來加速內容交付。
+    - 缺點：對於具有大量動態內容或個性化內容的網站來說，靜態化可能會變得困難，因為需要考慮如何動態生成內容。
+
+3. 伺服器端渲染（Server-Side Rendering，SSR）：
+
+    - 在伺服器端動態生成每個頁面的 HTML，然後將其提供給客戶端。
+    - 優點：能夠提供具有動態內容的完整 HTML，同時保持 SEO 的友好性。
+    - 缺點：伺服器端渲染可能導致伺服器壓力增加，因為需要動態生成每個頁面的 HTML。
+
+在選擇最佳解決方案時，需要考慮網站的內容類型、業務需求、技術能力以及預算等因素。通常情況下，如果網站主要是靜態內容，並且具有良好的 SEO 是一個關鍵考慮因素，則靜態化或預渲染可能是更好的選擇。然而，如果網站具有大量動態內容或個性化內容，並且需要更好的用戶體驗，那麼伺服器端渲染可能會更合適。
+
+### 3.【 React 】React 有哪幾種方式可以傳遞資料給 React 元件？
+在 React 中，有幾種方式可以將資料傳遞給元件：
+
+1. Props（屬性）：透過屬性的方式將資料傳遞給 React 元件。這是最常見和基本的方式。
+
+```
+// 父元件傳遞資料給子元件
+function ParentComponent() {
+  const data = "這是來自父元件的資料";
+  return <ChildComponent data={data} />;
+}
+
+function ChildComponent(props) {
+  return <p>{props.data}</p>;
+}
+```
+
+2. State（狀態）：對於需要在元件內部管理的資料，可以使用元件的狀態。
+
+```
+// 使用狀態傳遞資料
+function MyComponent() {
+  const [data, setData] = useState("這是一個初始資料");
+
+  return <p>{data}</p>;
+}
+```
+
+3. Context（上下文）：上下文允許您在整個元件樹中傳遞資料，而不必一級一級地手動傳遞 props。
+
+```
+// 創建上下文
+const MyContext = React.createContext();
+
+// 上下文提供者
+function MyProvider({ children }) {
+  const [data, setData] = useState("這是一個初始資料");
+
+  return (
+    <MyContext.Provider value={{ data, setData }}>
+      {children}
+    </MyContext.Provider>
+  );
+}
+
+// 子元件使用上下文
+function MyComponent() {
+  const { data } = useContext(MyContext);
+
+  return <p>{data}</p>;
+}
+
+// 在應用中使用上下文提供者
+function App() {
+  return (
+    <MyProvider>
+      <MyComponent />
+    </MyProvider>
+  );
+}
+```
+
+這些是 React 中常用的資料傳遞方式，你可以根據項目的需求選擇最適合的方式。 
+
+### 4.【 React 】state & props 的差異為何？
+
+與 props 不同的地方在於， state 不是透過外部傳進來的，而是由一個元件決定它自己內部 state 。每當呼叫 `this.setState()` 時，`this.setState()` 會在資料狀態改變時，自動呼叫 `.render()` ，進而導致畫面重新轉譯。
+
+在 React 中，State（狀態）和 Props（屬性）是兩種不同的資料傳遞和管理方式，它們有著以下的主要差異：
+
+1. 定義：
+    - State（狀態）：是在 React 元件內部定義和管理的資料。每個元件都可以有自己的狀態，並且可以使用 `useState` 或 `this.state` 來定義和更新。
+    - Props（屬性）：是由父元件傳遞給子元件的資料，子元件通常不能直接修改 Props。Props 是從父元件傳遞給子元件的，因此子元件可以接收並使用這些資料。
+
+2. 範圍：
+    - State（狀態）：只能在定義它的元件內部使用。每個元件的狀態都是獨立的，其他元件無法直接訪問或修改它。
+    - Props（屬性）：是從父元件傳遞給子元件的，因此只能在接收 Props 的子元件中使用。
+
+3. 可變性：
+    - State（狀態）：是可變的，可以使用狀態更新函數（如 `setState` 或 `useState` 返回的更新函數）來修改狀態的值。
+    - Props（屬性）：是不可變的，子元件無法直接修改父元件傳遞的 Props，它們只能讀取並顯示這些資料。
+
+總的來說，State 是元件內部的資料，用於管理元件的狀態和行為，而 Props 是從父元件傳遞給子元件的資料，用於將資料傳遞到元件中。使用這兩種方式可以有效地組織和管理 React 應用中的資料流。
+
+### 5.【 React 】React List 為什麼需要 key 這個 prop？
+
+#### List 中的 `Key` 是做什麼用的
+
+- Keys 主要是用來幫助 React 辨認清單中的哪個元素被改變、增加或移除了。
+- 但若是想將元素添加在清單的最上方時，效能會最差，因為 React 會認為它們是完全不同的，而將其整個更新。
+- 為了解決這樣的問題，React 使用 `key` 這個屬性來做清單元素的比對，React 將能透過 `key` 來知道哪個元素是新加入的，而不是去比對 `DOM 元素`本身。
+
+在 React 中，當你渲染列表時，每個列表項目需要一個唯一的標識符（key）。這是因為 React 使用 `key` 來確保列表項目之間的穩定性和性能優化。以下是為什麼 React 中的列表需要 `key` 的幾個原因：
+
+1. 協助 React 識別項目：當你對列表進行更新、重新排序或刪除操作時，React 使用 `key` 來識別列表中的各個項目。如果沒有 `key`，React 將無法準確識別列表中的每個項目，這可能會導致錯誤的渲染結果或性能下降。
+
+2. 提高性能：使用 `key` 可以幫助 React 進行高效的重渲染。React 使用 `key` 來比較新的列表和舊的列表，並確定哪些項目需要更新、新增或移除。這樣可以大大減少不必要的 DOM 操作，從而提高應用的性能。
+
+3. 保持元素的狀態：當你有一個動態的列表，例如表單或可排序的列表時，使用 `key` 可以確保 React 能夠正確地保留元素的狀態。如果沒有 `key`，React 可能會導致元素狀態的錯誤或丟失。
+
+總之，使用 `key` 是 React 中列表渲染的重要標準之一。它確保了列表項目之間的穩定性和性能，並確保 React 能夠正確地處理列表的更新和渲染。因此，在開發 React 應用時，請確保為列表中的每個項目提供唯一且穩定的 `key`。
+
+### 6.【 React 】useEffect 的用途＆使用方式？
+useEffect 的使用時機類似在傳統 class 中使用 componentDidMount, componentDidUpdate 和 componentWillUnmount 的生命週期，關於 `useEffect` 的基本說明可以參考「[React Hooks 起步走](https://pjchender.dev/react/react-doc-hooks-into/)」。
+
+在 [Dan Abramov](https://overreacted.io/) 的 [A Complete Guide to useEffect](https://overreacted.io/a-complete-guide-to-useeffect/) 中提到，在學習 `useEffect` 時，我們應該忘記過去對於 React 生命週期所學到的，以全新的體驗和思考方式來認識 useEffect。
+
+- 使用 `useEffect` 一定要留意第一次執行的時間點，如果第一次不想要執行要 return 掉
+- 使用 `useEffect` 一定要留意 Dependencies Array 中的變數，它們的改變會觸使 `useEffect` 執行
+- Dependencies Array 是透過 `Object.is()` 來比較兩個值是否相等
+
+`useEffect` 是 React 中的一個 Hook，用於在函數組件中執行副作用操作。它可以在每次渲染後執行，並且可以擁有清理機制，以防止內存洩漏。
+
+useEffect 的主要用途包括：
+
+1. 執行副作用操作：`useEffect` 可以用於執行各種副作用操作，例如數據加載、訂閱資源、手動 DOM 操作等。通常，我們會將這些副作用操作放在 useEffect 中，以確保它們在組件渲染後執行。
+
+2. 設置和清理資源：`useEffect` 通常與清理機制一起使用，以確保在組件卸載或重新渲染時清理資源。這可以通過從 useEffect 返回的函數中執行清理操作來實現。
+
+3. 訂閱資源：`useEffect` 可以用於訂閱外部資源的更新，例如 WebSocket、事件監聽器等。當外部資源發生變化時，useEffect 中的代碼將被觸發。
+
+使用 `useEffect` 的方式如下：
+
+```
+import React, { useEffect, useState } from 'react';
+
+function MyComponent() {
+  // 定義狀態
+  const [data, setData] = useState(null);
+
+  // 定義副作用操作
+  useEffect(() => {
+    // 在組件渲染後執行這些代碼
+    // 通常用於數據加載、訂閱資源、DOM 操作等
+
+    // 返回清理函數（可選）
+    return () => {
+      // 在組件卸載時或下一次執行副作用前執行這些代碼
+      // 通常用於清理資源，如取消訂閱、清除計時器等
+    };
+  }, []); // 第二個參數是依賴項，如果是空數組，則表示僅在組件首次渲染時執行
+
+  // JSX 中返回組件的 UI
+  return <div>{data}</div>;
+}
+```
+
+在這個例子中，`useEffect` 中的代碼將在每次組件渲染後執行，因為依賴項是空數組。在這個副作用操作中，我們可以執行數據加載、訂閱資源等操作，並且可以返回一個清理函數，以在組件卸載或重新渲染時清理資源。
+
+### 7.【 React 】useCallback, useMemo 的用途＆差異點？
+- `useCallback` 會將原本傳入的函式保存下來（memoized），如果相依陣列（dependencies）沒有改變的話，則該函式會參照到原本的位置，因此會是同一個函式，如此可以避免畫面在不必要時重新轉譯（因為在 function component 中的函式每次都是全新的，所以每次都會觸發重新轉譯）。
+
+- `useMemo` 只有在 deps 有改變時才會呼叫該函式並重新回傳新的計算值，它可以用來避免每次轉譯時都要重新進行複雜的計算。
+
+### 8.【 React 】controlled & uncontrolled components 差異為何？
+#### 什麼是 Controlled Component？
+- `Controlled Component` 簡單來說就是利用 React 自身的 `state` 機制來進行元件的 `value` 控管，除了 `state` 之外我們也可以撰寫一些 update state 的 callback 並當成 props 傳入來幫助控管。
+
+- 通常 `Controlled Component` 的探討都是在一些會跟使用者互動的 element 上，例如 `input`、`select`、`textarea` 等，由於這些 `element` 的 `value` 是來自使用者，因此才會有 `Controlled Component` 的設計方式來幫助 React 去更好的控管這些 `element value`。
+
+#### 什麼是 `Uncontrolled Component`？
+- `Uncontrolled Component` 就是 `Controlled Component` 的反例，也就是此元件的 `value` 不受 React 的 `state` 機制所控管，是由元件自身的機制來進行 `value` 控管。
+
+- 所以可想而知我們在 `Uncontrolled Component` 上就不需要額外去寫 `state` 或者是任何的 `update state callback`，只需要直接 `render` 出此元件即可。
+
+### 9.【 React 】什麼是 Pure Components？優點為何？
+Pure Components 是 React 中的一種特殊類型的元件，它是一個具有內建的 `shouldComponentUpdate` 方法的類型化元件。這個方法可以幫助 React 判斷是否需要重新渲染組件。Pure Components 會對其 props 和 state 進行深度比較，如果這些值沒有發生變化，則會阻止不必要的重新渲染，從而提高應用的性能。
+
+#### Pure Components 的主要優點包括：
+
+1. 自動性能優化：Pure Components 內建的 `shouldComponentUpdate` 方法會自動進行比較，如果 `props` 和 `state` 沒有變化，則不會觸發重新渲染。這樣可以避免不必要的 DOM 操作，從而提高應用的性能。
+
+2. 簡化開發：使用 Pure Components 可以簡化開發流程，因為開發人員不需要手動實現 `shouldComponentUpdate` 方法來進行性能優化。Pure Components 內建的深度比較功能可以幫助開發人員快速構建性能良好的應用。
+
+3. 避免不必要的重新渲染：Pure Components 的深度比較功能可以幫助避免不必要的重新渲染。這對於具有大量複雜 UI 的應用來說尤其重要，因為它可以減少不必要的渲染成本，提高應用的響應性和效率。
+
+總的來說，Pure Components 是 React 中一種強大的性能優化工具，它可以幫助開發人員輕鬆地提高應用的性能，同時簡化開發流程。使用 Pure Components 可以避免不必要的重新渲染，從而提高應用的響應性和效率。
+
+### 10.【 React 】使用過哪些 state management libraries？其數據流及元件生命週期為何？
+
+#### Redux：
+
+- 數據流：Redux 使用單一的全局 `store` 來管理整個應用的狀態。狀態更新通過派發 `actions` 到 `reducers` 來完成。
+
+- 元件生命週期：Redux 的數據流與 React 元件生命週期緊密結合。通常，在 React 的容器組件中使用 Redux，將 Redux 的狀態映射到組件的 `props` 中。這些容器組件使用 `connect` 函數來訂閱 Redux `store` 中的狀態變化，並將相應的狀態傳遞給子組件。
+
+```
+store -> action -> store -> reducers -> react-components 更新 store
+```
+
+### 11.【 React 】使用過哪些 form 相關的 libraries？經驗為何？(formik or react-hook-form or ?)
+- 主要使用 `Ant Design` 的第三方元件庫開發，
+- 基本上可以利用 JSX 語法，利用 props 快速完成表單設計。
+
+關於 `Ant Design`，它是一個流行的 UI 庫，提供了許多預先設計好的 React 組件，包括表單組件。大多數人對於 `Ant Design` 的經驗都是正面的，因為它提供了豐富的功能和美觀的設計，使得開發者能夠快速構建出現代化的 UI。對於表單相關的組件，`Ant Design` 提供了一些方便的 API 和預先設計好的樣式，使得表單開發變得更加簡單和高效。因此，許多開發者會選擇使用 `Ant Design` 來構建他們的 React 應用。
+
+### 12.【 React 】使用 Hook 時，有哪些規則必須遵守？
+使用 `React Hooks` 時，有一些重要的規則必須遵守，以確保正確和可靠的運作。
+
+以下是一些常見的規則：
+
+1. 只能在 React 函數組件的 `最頂層` 使用 `Hook`：不能在條件語句、迴圈、或是巢狀函數中使用 `Hook`。這是因為 React 需要使用 `Hook 的調度器` 來跟蹤它們的狀態，並確保它們在重新渲染時保持一致。
+
+2. 只能在 React 函數組件中使用 `Hook`：不能在 `普通的 JavaScript 函數` 中使用 `Hook`。這是因為 React 需要在組件的生命週期中管理 Hook 的狀態。
+
+3. Hook 的調用順序必須固定：`Hook` 必須在每次 `渲染` 中以相同的順序被調用。這是 React 根據 `Hook` 的調用順序來將狀態與相應的組件進行關聯的機制。
+
+4. 只能在 React 的函數組件中使用 React 提供的 `Hook`：不能在 `自定義的 JavaScript 函數` 或其他非 React 函數中使用 React 提供的 `Hook`。
+
+5. 命名規範： `Hook` 的名稱必須以 `use` 開頭，這是 React 用來檢測 `Hook` 是否被正確使用的慣例。
