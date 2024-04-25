@@ -10,14 +10,22 @@ import { SITE_METADATA } from './src/consts.ts';
 export default defineConfig({
   prefetch: true,
   site: SITE_METADATA.siteUrl,
+  markdown: {
+    syntaxHighlight: 'prism'
+  },
   integrations: [
-    mdx(),
+    // mdx(),
     sitemap(),
     tailwind(),
     partytown({
       config: {
         forward: ['dataLayer.push']
       }
+    }),
+    mdx({
+      // Markdown config now ignored
+      extendMarkdownConfig: false
+      // No `remarkPlugins` applied
     })
   ]
 });
