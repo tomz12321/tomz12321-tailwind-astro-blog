@@ -1,0 +1,239 @@
+---
+title: 踏入自媒體的 30 天 - Day 18
+author: Tomzyang
+date: 2024-03-18
+tags: ['astro', 'successes', '30days', 'front-end']
+draft: false
+summary: '然後突然要學習置中了怎麼辦？我們來啃食 CSS 的三種水平垂直置中方法。'
+---
+
+# Day #18
+
+### 前言
+
+30 days 的開始
+踏入自媒體的 30 天 ❗️- 我有個朋友在做自媒體
+
+### Image
+
+Here we go :
+
+![image](/static/images/hereWeGo.jpg)
+
+### 正文開始
+
+重新拾起網頁三劍客 《CSS》
+
+然後突然要學習置中了怎麼辦？我們來啃食 CSS 的三種水平垂直置中方法。
+
+### CSS 的三種水平垂直置中方法
+
+```
+方法一： Flexbox
+方法二： 相對定位 + transform
+方法三： 絕對定位
+```
+
+首先我們先假設 HTML 的 body 元素裡面，目前是長這樣
+
+```
+<html>
+    <div class="parent translate">
+        <div class="child"></div>
+    </div>
+
+    <div class="parent">
+        <h1 class="text">Hello</h1>
+    </div>
+<html>
+```
+
+這裡預設了區塊置中和文字置中兩種情況。
+
+```
+/* CSS */
+.parent{
+  background: gray;
+  width: 100%;
+  height: 300px;
+}
+
+.child {
+  background: blue;
+  width:100px;
+  height:100px;
+}
+```
+
+### 1. Flexbox
+
+第一個方法是：在父容器上套用 Flex 進行操作。
+
+> Flex 的概念是 會有一個容器 `(Container)` 包住物件 `(Item)`，然後可以控制內部物件的排版方式。
+> → 所有的 內容物 `(Item)` 都是 彈性物件 `(Flex Item)`。
+>
+> `(相關說明和圖解可以參考: A Complete Guide to Flexbox)`
+
+Flexbox 垂直置中的方法，是在 Container 加上置中的控制項，
+以範例來說就是加在 `.parent`：
+
+```
+.parent {
+  display: flex;
+  /* 水平置中 */
+  justify-content: center;
+  /* 垂直置中 */
+  align-items: center;
+}
+```
+
+其中 `align-items: center;` 也可以用這兩行替換，效果一樣：
+
+```
+.parent {
+  display: flex;
+  /* 水平置中 */
+  justify-content: center;
+  /* 垂直置中 */
+  align-content: center;
+  flex-wrap: wrap;
+}
+```
+
+- Align-content
+
+  - 決定在多行情況下，items 垂直方向的分布情形。(對只有一行的 items 無效)
+  - 在 `flex-wrap: nowrap;` 的情況下無效，所以在這裡要再加上`flex-wrap`。
+
+- Flex-wrap
+  - `nowrap` (預設值)會將所有的 flex items 壓縮在同一行。
+  - 設值為 `wrap`，則不會壓縮 items，如果 items 過多就換行。
+
+```
+這個方法，item 不論是文字(<p>、<h1>、...)或區塊(<div>)都可以用，是該作者自己最常使用的方法。
+```
+
+缺點是相容性問題，IE6 ~ 9、Opera10 ~ 11.5 都不支援 flex。
+
+### 2. 相對定位 + Transform
+
+第二個方法，是在要置中的元素 (.child) 加上相對定位。
+
+```
+.child {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+```
+
+#### Position
+
+> CSS 的佈局是將一個個 box 排進 flow 裡，而設值 relative 可以使元素在不被 flow 排除的情況下，以所在位置為基準，進行偏移。
+>
+> - Top / Left：
+>
+>   - 垂直置中等於，距離上半部 50%，這裡的百分比是基於容器的寬度。
+>   - 水平置中則等於向左方偏移 50%。
+>
+> - Transform
+>   - 因為 CSS 預設的物件，基準點是向左上方靠齊，如果沒有調整 translate，會發現水平和垂直方向，都會超過中心。
+>   - translateX (水平方向) = -50%，會向左平移物件寬度的 50%，translateY 則是控制垂直方向上移。可以想成加入這一行才會把基準點移到物件的中心。
+
+```
+在<div>的情況上沒什麼問題，但會發現文字水平方向位置不對:
+```
+
+其實可以用更簡單一點的方法控制文字的水平置中：
+
+```
+.parent {
+  text-align: center;  // 文字水平置中
+}
+
+.text {
+  position: relative;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+```
+
+text-align: center; 加在文字上也有效。(但概念上該作者覺得加在父容器上比較好。)
+
+```
+然後記得 translateX (水平方向) 不需要調整，但 translateY (垂直方向) 依然需要調整基準點，不然會偏移(靠下)。
+這樣就成功了！
+```
+
+!! 然而，缺點是 IE6~8 依然不支援 transform。
+
+#### 3. 絕對定位
+
+第三個方法是設定 child 為 以 parent 為基準的絕對定位。
+
+```
+.parent {
+  position: relative;
+}
+
+.child {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+position: absolute
+```
+
+CSS 的絕對定位會將 box 移出 flow，偏移的位置預設會以整個網頁(視窗)為基準，或是以設為 `position: relative;` 的父層為基準。
+因為這裡還需要依賴 `.parent` 的位置進行偏移，所以要在 `.parent` 設定 `relative`。
+這個方法就比較沒有相容性的問題，
+缺點是，像文字不具寬高的元素會無法使用。
+
+#### 文字的處理方法
+
+在這裡可以嘗試加入偽元素來處理，
+
+可以想像成文字前多了一個看不到的元素，
+
+```
+.parent {
+  text-align: center;  // 文字水平置中
+}
+```
+
+```
+.parent:before {
+  content: "";
+  display: inline-block;
+  height: 100%;    // block才有高度
+  vertical-align: middle;    // 對inline有效，垂直置中對齊
+}
+
+.child {
+  display: inline-block;   // 設定inline也可以
+}
+```
+
+- `content: "";`
+  content 內容為空，因為偽元素是輔助用，實際上不會看到這個元素。
+
+- `display: inline-block;`
+  是為了確保，能設定高度和 parent 相同 (100%)，且同時設定`vertical-align`是置中。
+
+雖然三個正解長得都一樣，但還是能得到成功的結果。
+
+---
+
+#### 延伸閱讀：
+
+想要繼續閱讀，可以來這篇鐵人賽文章 [傳送門](https://ithelp.ithome.com.tw/users/20129476/ironman/4413)
+以上大部分文字，來自於上述系列的第二十九天。
+
+因為我的 google 搜尋紀錄是長這樣的
+![image](/assets/Day18/day18-1.png)
+
+最後 介紹一個小工具 [傳送門](howtocenterincss.com)
