@@ -12,7 +12,7 @@ images: '/static/images/astro.jpg'
 
 ## 前言
 
-長程航班不是寫作的敵人，而是把輸出切成可攜帶模組的壓力測試環境。
+在 IST→BOG 的長程航程裡，我用離線 AI 與 GOAR 結構將素材模組化、節奏化，克服時差與無網限制完成穩定輸出。
 
 ### Image
 
@@ -100,17 +100,17 @@ OUTPUT: 4 段，每段 2–4 句，避免誇張形容，不捏造資料。
 
 ```yaml
 segment_log:
-  - date: 2025-09-13                # (string, YYYY-MM-DD) Date of the flight segment
-    route: IST-BOG                  # (string) Flight route, origin-destination airport codes
-    distance_km: 10751.76           # (float) Distance flown in kilometers
-    fare_twd: 20772                 # (integer) Ticket fare in TWD (New Taiwan Dollar)
-    timezones: 'EET → COT'          # (string) Timezone change, format: 'origin → destination'
-    sleep_cycle: '2 x 90min + 1 x 30min nap'  # (string) Sleep pattern during flight
-    device_switch: ['phone+keyboard', 'tablet read-only']  # (list of strings) Devices used and their modes
-    ife_marks: ['Sahel crossing', 'Amazon fringe clouds']  # (list of strings) Notable in-flight entertainment or views
-    hydration_ml: 1200              # (integer) Water intake in milliliters
-    productivity_score: 7           # (integer, 1–10) Self-rated productivity score
-    ai_usage_mode: 'offline-structure-first'  # (string) AI usage mode, e.g., 'offline-structure-first'
+  - date: 2025-09-13 # (string, YYYY-MM-DD) Date of the flight segment
+    route: IST-BOG # (string) Flight route, origin-destination airport codes
+    distance_km: 10751.76 # (float) Distance flown in kilometers
+    fare_twd: 20772 # (integer) Ticket fare in TWD (New Taiwan Dollar)
+    timezones: 'EET → COT' # (string) Timezone change, format: 'origin → destination'
+    sleep_cycle: '2 x 90min + 1 x 30min nap' # (string) Sleep pattern during flight
+    device_switch: ['phone+keyboard', 'tablet read-only'] # (list of strings) Devices used and their modes
+    ife_marks: ['Sahel crossing', 'Amazon fringe clouds'] # (list of strings) Notable in-flight entertainment or views
+    hydration_ml: 1200 # (integer) Water intake in milliliters
+    productivity_score: 7 # (integer, 1–10) Self-rated productivity score
+    ai_usage_mode: 'offline-structure-first' # (string) AI usage mode, e.g., 'offline-structure-first'
 ```
 
 ### 4) 節奏與專注
